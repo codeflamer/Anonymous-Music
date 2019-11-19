@@ -1,0 +1,25 @@
+{% extends 'account/base.html' %}
+
+{% block body %}
+    {% if not request.user.username == user.username %}
+        {% if user in friends %}
+            <a href="{% url 'home:chat' user.id %}">message</a>
+        {% endif %}
+    {% endif %}
+<h1>{{ user }}'s profile</h1>
+
+<p>Firstname: {{ user.first_name }}</p>
+<p>Lastname: {{ user.last_name }}</p>
+<p>Emailname: {{ user.email }}</p>
+<p>Description: {{ user.userprofile.description }}</p>
+<p>Email: <a href="{{ user.userprofile.website }}">{{ user.userprofile.website }}</a></p>
+<p>Number: {{ user.userprofile.phone }}</p>
+ {% if user.userprofile.image %}
+    <p>Profilepicture: <img src="{{ user.userprofile.image.url }}"  width='200px' height="200px"/></p>
+ {% endif %}
+{% if request.user.username == user.username %}
+<a href="{% url 'tutorial:edit_profile' %}">Edit</a>
+<a href="{% url 'tutorial:reset_password' %}">Resetpassword</a>
+<a href="{% url 'tutorial:change_password' %}">Changepassword</a>
+{% endif %}
+{% endblock %}

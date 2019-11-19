@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <a href="{% url 'home:home' %}">Home</a>
+    <h1>Tweet</h1>
+    {% for tweet in tweets %}
+        <li>{{ tweet.text }}</li>
+        <li>{{ tweet.date }}</li>
+    {% endfor %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}<br/>
+        <button type="submit">Tweet</button>
+    </form>
+</body>
+</html>

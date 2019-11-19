@@ -1,0 +1,55 @@
+{% extends 'account/base.html' %}
+
+{% block body %}
+
+    <div style="float: left">
+    <h1>this is actually working</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ forms.errors }}
+        {{ form.post }}
+        <button type="submit">Submit</button>
+    </form>
+    {% for post in posts %}
+        <h1>{{ post.post }}</h1>
+        <p>created on {{ post.created }} by {{ post.user.get_full_name }}</p>
+    {% endfor %}
+
+    <h1>These are friend that you may know</h1>
+    {% for user in users %}
+
+        <a href="{% url 'tutorial:view_profile_with_id' user.pk %}"><h3>{{ user.first_name }}</h3></a>
+        {% if not user in friends %}
+        <a href="{% url 'home:change_friends' alpha='add' num=user.pk %}" style="cursor:pointer;"><button>Add friend</button></a>
+        {% endif %}
+    {% endfor %}
+    </div>
+
+
+    <div style="float:right">
+    <h1>Friends</h1>
+    {% if friends %}
+    {% for friend in friends %}
+
+        <h3><a href="{% url 'tutorial:view_profile_with_id' friend.pk %}">{{ friend.username }}</a>
+        ~
+        {% if not friend in lists %}
+            <a href="{% url 'home:change_friends' 'add' friend.pk %}">follow</a>
+        {% endif %}
+
+        </h3>
+
+
+
+    {% endfor %}
+    {% endif %}
+
+    <h2>Friends Lists</h2>
+    {% for list in lists %}
+        <li>{{ list.username }} - <a href="{% url 'home:change_friends' 'remove' list.pk %}">unfollow</a> </li>
+
+
+    {% endfor %}
+    </div>
+
+{% endblock %}
